@@ -12,11 +12,11 @@ fields.speech <- c("Speech.Rate.1", "Speech.Rate.2", "Speech.Process.Interrupt",
 
 #############################################################
 # Speech Data Entry
-  speech.rate.features.1 <- c( "Normal" = "",
+  speech.rate.features.1 <- c( "Normal" = "normal",
                                "Fast" = "fast",
                                "Slow" = "slow")
   
-  speech.rate.features.2 <- c("Normal" = "",
+  speech.rate.features.2 <- c("Normal" = "normal",
                               "Mildly Pressured" = "mildly pressured",
                               "Moderately Pressured" = "moderately pressured",
                               "Severely Pressured" = "severely pressured",
@@ -24,37 +24,37 @@ fields.speech <- c("Speech.Rate.1", "Speech.Rate.2", "Speech.Process.Interrupt",
                               "Moderate Initiation Latency" = "moderate initiation latency",
                               "Severe Initiation Latency" = "severe initiation latency")
   
-  speech.process.interrupt <- c("No (normal)" = "",
+  speech.process.interrupt <- c("No (normal)" = "normal",
                                 "Occasionally" = "occasionally",
                                 "Frequently" = "frequently",
                                 "Completely" = "completely")
   
-  speech.process.circum <- c("Normal" = "",
+  speech.process.circum <- c("Normal" = "normal",
                              "Occasionally" = "occasionally",
                              "Frequently" = "frequently",
                              "Completely" = "consistently")
   
-  speech.process.reorient <- c("Normal" = "",
+  speech.process.reorient <- c("Normal" = "normal",
                                "Occasional" = "occasional",
                                "Frequent" = "frequent",
                                "Unable" = "unable")
   
-  speech.prosody.features <- c( "Normal" = "",
+  speech.prosody.features <- c( "Normal" = "normal",
                                 "Monotone" = "monotonic",
                                 "Exaggerated" = "exaggerated"
   )
   
-  speech.rhythm.features <- c("Normal" = "",
+  speech.rhythm.features <- c("Normal" = "normal",
                               "Halting" = "halting",
                               "Stammering" = "stammering",
                               "Slurred" = "slurred"
   )
   
-  speech.content.features.1 <- c("Normal" = "",
+  speech.content.features.1 <- c("Normal" = "normal",
                                "Impoverished" = "impoverished",
                                "Mute" = "mute")
   
-  speech.content.persev <- c("None" = "",
+  speech.content.persev <- c("None" = "normal",
                                  "Mild" = "mild",
                                  "Moderate" = "moderate",
                                  "Severe" = "severe")
@@ -107,7 +107,7 @@ fields.speech <- c("Speech.Rate.1", "Speech.Rate.2", "Speech.Process.Interrupt",
                        choices = speech.rate.features.1, selected = current.MSE[["Speech.Rate.1"]])
     updateRadioButtons(session, "Speech.Rate.2", label = NULL, inline = FALSE,
                        choices = speech.rate.features.2, selected = current.MSE[["Speech.Rate.2"]])
-    updateRadioButtons(session, "Speech.Process.Interrupt", label = "Interruptible", inline = TRUE, 
+    updateRadioButtons(session, "Speech.Process.Interrupt", label = "Uninterruptible", inline = TRUE, 
                        choices = speech.process.interrupt, selected = current.MSE[["Speech.Process.Interrupt"]])
     updateRadioButtons(session, "Speech.Process.Circum", label = "Circumstantial", inline = TRUE, 
                        choices = speech.process.circum, selected = current.MSE[["Speech.Process.Circum"]])
@@ -255,6 +255,7 @@ NarrativeSpeech <- function( current.mse) {
                           )
     )
     
+    # TO DO
     speech.str <- paste0( speech.str, speech.df$Speech.Free.Content
                           )
   }

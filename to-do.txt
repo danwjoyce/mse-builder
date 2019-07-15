@@ -1,0 +1,26 @@
+# To Do List:
+
+1) Integrate test-collapse javascript code to read collapsed/expanded state (i.e. when producing narrative, we should allow the user to hide panels of the MSE and NOT have these included in the narrative description even though the default values will be displayed)
+
+2) Common UI tool for "not examined" or "inaccessible" - this will apply to things like thought / perception / mood
+
+3) Check the convention of using "" as the "normal" -- shoudl change to explicit "normal" so we can use the choices lists (for selection buttons, radio buttons etc) as key-indexable arrays and matrices.  Speech-tab largely ok, but missing some features (see last lines of NarrativeSpeech() )
+
+4) need to find a way of displaying the narrative text in an editor format (shinyMCE) : works in shinyapps.io so thats a start !
+    -- integratee test-html-editor.R
+    
+5) Investigate sodium R package (which implements AES256) -- need to find a way of implementing symmetric compression as a wrapper around saveRDS -- importantly, this must be fail safe : if some contingency not met / function unable to complete, has to gracefully destroy any intermediate data structures e.g. the serialised data.frame before it's been encrypted.  Also, need find out how to implement symmetric eencryption using a passphrase whcih is kept by the user and ?constant across sessions.  
+
+
+-------------
+ Psychomotor :  
+middle column : -- global disturbance -- posturing + perseveration (underneath Disorganisation of Goal Directed Behaviours); 
+? echopraxia; disinhibition; negativism (motiveless resistance); ambitendancy
+
+Third column : "tone" related movement disorder
+= Tremor
+- waxy flexibility (text for limbs); 
+- dystonic movements; (text for limb / area ? maybe button for head/face/neck/torso/UL+LL)
+
+
+

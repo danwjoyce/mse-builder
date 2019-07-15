@@ -8,10 +8,15 @@ fields.appbeh <- c("AppBeh.Dress", "AppBeh.Dress.Text", "AppBeh.Self.Neglect", "
                    "AppBeh.Rapport.Guarding", "AppBeh.Rapport.Guarding.Text",
                    "AppBeh.Rapport.Minimising", "AppBeh.Rapport.Minimising.Text",
                    
-                   "AppBeh.Psychomotor.Global", "AppBeh.Psychomotor.Gesture",
-                   "AppBeh.Psychomotor.Reactive", "AppBeh.Psychomotor.Disorganisation",
+                   "AppBeh.Psychomotor.Alert", "AppBeh.Psychomotor.Alert.Text", 
+                   "AppBeh.Psychomotor.Gesture.Form",
+                   "AppBeh.Psychomotor.Gesture.Rate",
+                   "AppBeh.Psychomotor.Reactions.Form",
+                   "AppBeh.Psychomotor.Reactions.Rate",
+                   "AppBeh.Psychomotor.Disorganisation", "AppBeh.Psychomotor.Disorganisation.Text",
                    "AppBeh.Psychomotor.Mannerism", "AppBeh.Psychomotor.Mannerism.Text",
                    "AppBeh.Psychomotor.Stereotypy", "AppBeh.Psychomotor.Stereotypy.Text",
+                   "AppBeh.Psychomotor.Tics", "AppBeh.Psychomotor.Tics.Text",
                    
                    "AppBeh.Motor.Persev", "AppBeh.Motor.Persev.Text",
                    "AppBeh.Motor.Echopraxia", "AppBeh.Motor.Echopraxia.Text",
@@ -23,72 +28,78 @@ fields.appbeh <- c("AppBeh.Dress", "AppBeh.Dress.Text", "AppBeh.Self.Neglect", "
 ################## Appearance and Behaviour Data Entry
 
 appbeh.dress <- c(
-  "Appropriate" = "",
+  "Appropriate" = "normal",
   "Underdressed" = "underdressed",
   "Overdressed" = "overdressed"
 )
 
 appbeh.self.neglect <- c(
-  "None" = "",
+  "None" = "normal",
   "Mild" = "mild",
   "Moderate" = "moderate",
   "Severe" = "severe"
 )
 
 appbeh.eye.contact <- c(
-  "Normal" = "",
+  "Normal" = "normal",
   "Over Extended" = "over extended",
   "Avoidant" = "avoidant",
   "Fixated" = "fixated"
 )
 
 appbeh.rapport <- c(
-  "Normal" = "",
+  "Normal" = "normal",
   "Some difficulty" = "some difficulty",
   "Very difficult" = "very difficult"
 )
 
 appbeh.guarding.minimising <- c(
-  "None" = "",
+  "None" = "normal",
   "Occasional" = "occasional",
   "Frequent" = "frequent",
   "Completely" = "completely"
 )
 
-appbeh.psychomotor.global <- c(
-  "Normal" = "",
-  "Akinetic" = "akinetic",
-  "Retarded" = "retarded",
-  "Exaggerated" = "exaggerated"
+appbeh.psychomotor.alert <- c(
+  "Alert" = "normal",
+  "Sedated" = "sedated",
+  "Drowsy" = "drowsy",
+  "Lethargic" = "lethargic",
+  "Stuporous" = "stuporous"
 )
 
-appbeh.psychomotor.gesture <- c(
-  "Normal" = "",
+appbeh.psychomotor.gesture.form <- c(
+  "Normal" = "normal",
+  "Absent" = "absent",
   "Minimal" = "minimal",
   "Excessive" = "excessive"
 )
 
-appbeh.psychomotor.reactive <- c(
-  "Normal" = "",
+appbeh.psychomotor.gesture.rate <- c(
+  "Normal" = "normal",
   "Slow" = "slow",
-  "Prompt/Excessive" = "excessive"
+  "Fast" = "fast"
 )
 
+appbeh.psychomotor.reactions.form <- appbeh.psychomotor.gesture.form
+appbeh.psychomotor.reactions.rate <- appbeh.psychomotor.gesture.rate
+  
 appbeh.psychomotor.disorganisation <- c(
-  "Normal" = "",
+  "Normal" = "normal",
   "Mild" = "mild",
   "Moderate" = "moderate",
   "Complete" = "complete"
 )
 
 appbeh.psychomotor.mannerisms <- c(
-  "None" = "",
-  "Mild" = "mild",
-  "Moderate" = "moderate",
-  "Severe" = "severe"
+  "None" = "normal",
+  "Occasional" = "occasional",
+  "Frequent" = "frequent",
+  "Regular" = "regular"
 )
 
 appbeh.psychomotor.stereotypy <- appbeh.psychomotor.mannerisms
+appbeh.psychomotor.tics <- appbeh.psychomotor.stereotypy
 
 
 ####################################################################
@@ -145,29 +156,56 @@ MSE.tab.AppBeh <- function() {
 MSE.tab.Psychomotor <- function() {
   fluidRow(
       box(
-        title = "Global Psychomotor", status = "primary", width = 4, collapsible = TRUE, solidHeader = TRUE,
-        radioButtons(inputId = "AppBeh.Psychomotor.Global", label = "Globally", inline = TRUE,
-                     choices = appbeh.psychomotor.global),
+        title = "Global Psychomotor Behaviour", status = "primary", width = 4, collapsible = TRUE, solidHeader = TRUE,
+        splitLayout(cellWidths = c("35%", "65%"),
+          radioButtons(inputId = "AppBeh.Psychomotor.Alert", label = "Alertness", inline = FALSE,
+                       choices = appbeh.psychomotor.alert),
+          textAreaInput( inputId = "AppBeh.Psychomotor.Alert.Text", label = "Comments", value = "", height = "60px")
+        ),
         tags$hr(style="border-color: grey;"),
-        radioButtons(inputId = "AppBeh.Psychomotor.Gesture", label = "Gesturing", inline = TRUE, 
-                     choices = appbeh.psychomotor.gesture),
-        radioButtons(inputId = "AppBeh.Psychomotor.Reactive", label = "Reactions", inline = TRUE, 
-                     choices = appbeh.psychomotor.reactive)
+        tags$p(tags$b("Spontaneous Gestures")),
+        splitLayout(cellWidths = c("50%", "50%"),
+          radioButtons(inputId = "AppBeh.Psychomotor.Gesture.Form", label = "Content", inline = FALSE, 
+                       choices = appbeh.psychomotor.gesture.form),
+          radioButtons(inputId = "AppBeh.Psychomotor.Gesture.Rate", label = "Rate", inline = FALSE, 
+                       choices = appbeh.psychomotor.gesture.rate)
+        ),
+        tags$hr(style="border-color: grey;"),
+        tags$p(tags$b("Reactions to Stimuli")),
+        splitLayout(cellWidths = c("50%", "50%"),
+          radioButtons(inputId = "AppBeh.Psychomotor.Reactions.Form", label = "Content", inline = FALSE, 
+                       choices = appbeh.psychomotor.reactions.form),
+          radioButtons(inputId = "AppBeh.Psychomotor.Reactions.Rate", label = "Rate", inline = FALSE, 
+                       choices = appbeh.psychomotor.reactions.rate)
+        )
       ),
       box(
-        title = "Psychomotor Disturbance", status = "primary", width = 4, collapsible = TRUE, solidHeader = TRUE,
-        radioButtons(inputId = "AppBeh.Psychomotor.Disorganisation", label = "Disturbance of Goal-Directed Behaviour", inline = TRUE, 
-                     choices = appbeh.psychomotor.disorganisation),
+        title = "Psychomotor Anomalies", status = "primary", width = 4, collapsible = TRUE, solidHeader = TRUE,
+        tags$p(tags$b("Disorganisation of Goal-Directed Behaviour")),
         splitLayout(cellWidths = c("35%", "65%"),
-          radioButtons(inputId = "AppBeh.Psychomotor.Mannerism", label = HTML("Mannerisms/Habits <br/> (purposeful)"), inline = FALSE, 
+          radioButtons(inputId = "AppBeh.Psychomotor.Disorganisation", label = "Degree", inline = FALSE, 
+                       choices = appbeh.psychomotor.disorganisation),
+          textAreaInput(inputId = "AppBeh.Psychomotor.Disorganisation.Text", label = "Examples", value = "", height = "60px")
+        ),
+        tags$hr(style="border-color: grey;"),
+        splitLayout(cellWidths = c("35%", "65%"),
+          radioButtons(inputId = "AppBeh.Psychomotor.Mannerism", label = HTML("Mannerisms/Habits <br> (purposeful)"), inline = FALSE, 
                        choices = appbeh.psychomotor.mannerisms),
           textAreaInput( inputId = "AppBeh.Psychomotor.Mannerism.Text", label = "Examples", value = "", height = "60px")
         ),
+        tags$hr(style="border-color: grey;"),
         splitLayout(cellWidths = c("35%", "65%"),
-          radioButtons(inputId = "AppBeh.Psychomotor.Stereotypy", label = "Stereotypies (purposeless)", inline = FALSE, 
+          radioButtons(inputId = "AppBeh.Psychomotor.Stereotypy", label = HTML("Stereotypies <br> (purposeless)"), inline = FALSE, 
                        choices = appbeh.psychomotor.stereotypy),
           textAreaInput( inputId = "AppBeh.Psychomotor.Stereotypy.Text", label = "Examples", value = "", height = "60px")
+        ),
+        tags$hr(style="border-color: grey;"),
+        splitLayout(cellWidths = c("35%", "65%"),
+                    radioButtons(inputId = "AppBeh.Psychomotor.Tics", label = "Tics", inline = FALSE, 
+                                 choices = appbeh.psychomotor.tics),
+                    textAreaInput( inputId = "AppBeh.Psychomotor.Tics.Text", label = "Examples", value = "", height = "60px")
         )
+        
       ),
       box(
         title = "Other Psychomotor Abnormalities", status = "primary", width = 4, collapsible = TRUE, solidHeader = TRUE,
@@ -194,24 +232,24 @@ MSE.tab.Psychomotor <- function() {
     )
 }
 ####################################################################
-# Restore a speech tab UI from saved data
+# Restore App and Behaviour tab UI from saved data
 # pass current.MSE = NULL for a reset
 Restore_MSE.tab.AppBeh <- function(session, current.MSE){
 
   updateRadioButtons( session, inputId = "AppBeh.Dress", label = "Dress", inline = FALSE,
-                      selected = current.MSE[["AppBeh.Dress"]] )
+                      choices = appbeh.dress, selected = current.MSE[["AppBeh.Dress"]] )
   updateRadioButtons( session, inputId = "AppBeh.Self.Neglect", label = "Self-Neglect", inline = FALSE,
-                      selected = current.MSE[["AppBeh.Self.Neglect"]] )
+                      choices = appbeh.self.neglect, selected = current.MSE[["AppBeh.Self.Neglect"]] )
   updateRadioButtons(session, inputId = "AppBeh.Eye.Contact", label = "Eye Contact", inline = FALSE, 
-                      selected = current.MSE[["AppBeh.Eye.Contact"]] )
+                      choices = appbeh.eye.contact, selected = current.MSE[["AppBeh.Eye.Contact"]] )
   updateRadioButtons(session, inputId = "AppBeh.Rapport.Establish", label = "Establishing Rapport", inline = TRUE, 
-                     selected = current.MSE[["AppBeh.Rapport.Establish"]] )
+                     choices = appbeh.rapport, selected = current.MSE[["AppBeh.Rapport.Establish"]] )
   updateRadioButtons(session, inputId = "AppBeh.Rapport.Maintain", label = "Maintaining Rapport", inline = TRUE, 
-                     selected = current.MSE[["AppBeh.Rapport.Maintain"]] )
+                     choices = appbeh.rapport, selected = current.MSE[["AppBeh.Rapport.Maintain"]] )
   updateRadioButtons(session, inputId = "AppBeh.Rapport.Guarding", label = "Guarding", inline = FALSE, 
-                     selected = current.MSE[["AppBeh.Rapport.Guarding"]] )
+                     choices = appbeh.guarding.minimising, selected = current.MSE[["AppBeh.Rapport.Guarding"]] )
   updateRadioButtons(session, inputId = "AppBeh.Rapport.Minimising", label = "Minimising", inline = FALSE,
-                     selected = current.MSE[["AppBeh.Rapport.Minimising"]] )
+                     choices = appbeh.guarding.minimising, selected = current.MSE[["AppBeh.Rapport.Minimising"]] )
   
     # if current.MSE == NULL, be sure to reset the free text areas
     if( is.null( current.MSE ) ) {
@@ -234,42 +272,82 @@ Restore_MSE.tab.AppBeh <- function(session, current.MSE){
     
 }
 
+Restore_MSE.tab.Psychomotor <- function( session, current.MSE ){
+  
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Alert", label = "Alertness", inline = FALSE,
+                       choices = appbeh.psychomotor.alert, selected = current.MSE[["AppBeh.Psychomotor.Alert"]])
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Gesture.Form", #label = HTML("Spontaneous <br> Gestures (Content)"), 
+                       inline = FALSE, choices = appbeh.psychomotor.gesture.form,  
+                       selected = current.MSE[["AppBeh.Psychomotor.Gesture.Form"]])
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Gesture.Rate", #label = HTML("Spontaneous <br> Gestures (Rate)"), 
+                       inline = FALSE, choices = appbeh.psychomotor.gesture.rate,  
+                       selected = current.MSE[["AppBeh.Psychomotor.Gesture.Rate"]])
+    
+    
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Reactions.Form", inline = FALSE,
+                       choices = appbeh.psychomotor.reactions.form,  selected = current.MSE[["AppBeh.Psychomotor.Reactions.Form"]])
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Reactions.Rate", inline = FALSE,
+                       choices = appbeh.psychomotor.reactions.rate,  selected = current.MSE[["AppBeh.Psychomotor.Reactions.Rate"]])
+    
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Disorganisation", label = "Degree", inline = FALSE,
+                       choices = appbeh.psychomotor.disorganisation, selected = current.MSE[["AppBeh.Psychomotor.Disorganisation"]])
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Mannerism", inline = FALSE,
+                       choices = appbeh.psychomotor.mannerisms,  selected = current.MSE[["AppBeh.Psychomotor.Mannerism"]])
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Stereotypy", inline = FALSE,
+                       choices = appbeh.psychomotor.stereotypy, selected = current.MSE[["AppBeh.Psychomotor.Stereotypy"]])
+    updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Tics", inline = FALSE,
+                       choices = appbeh.psychomotor.stereotypy, selected = current.MSE[["AppBeh.Psychomotor.Tics"]])
+    
 
-## TO DO 
-# Restore_MSE.tab.Psychomotor <- function( session, current.MSE ){
-#     updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Global", label = "Globally", inline = TRUE,
-#                  selected = current.MSE[["AppBeh.Psychomotor.Global"]])
-#     updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Gesture", label = "Gesturing", inline = TRUE, 
-#                  selected = current.MSE[["AppBeh.Psychomotor.Gesture"]])
-#     updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Reactive", label = "Reactions", inline = TRUE, 
-#                  selected = current.MSE[["AppBeh.Psychomotor.Reactive"]])
-#     updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Disorganisation", label = "Disturbance of Goal-Directed Behaviour", inline = TRUE, 
-#                  selected = current.MSE[["AppBeh.Psychomotor.Disorganisation"]])
-#     updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Mannerism", label = HTML("Mannerisms/Habits <br/> (purposeful)"), inline = FALSE, 
-#                  selected = current.MSE[["AppBeh.Psychomotor.Mannerism"]])
-#     updateRadioButtons(session, inputId = "AppBeh.Psychomotor.Stereotypy", label = "Stereotypies (purposeless)", inline = FALSE, 
-#                  selected = current.MSE[["AppBeh.Psychomotor.Stereotypy"]])
-# 
-#     updateCheckboxInput(session, inputId = "AppBeh.Motor.Persev", label = "Perseveration", 
-#                         value = current.MSE[["AppBeh.Motor.Persev"]])
-#     
-#     updateCheckboxInput(session, inputId = "AppBeh.Motor.Echopraxia", label = "Echopraxia", 
-#                         value = current.MSE[["AppBeh.Motor.Echopraxia"]]),
-#     textAreaInput(inputId = "AppBeh.Motor.Echopraxia.Text", NULL, "", width = "200px", height = "35px")
-#     ),
-# 
-#     checkboxInput(inputId = "AppBeh.Motor.Tremor", label = "Tremor", value = FALSE),
-#     textAreaInput(inputId = "AppBeh.Motor.Tremor.Text", NULL, "", width = "200px", height = "35px")
-#     
-#     checkboxInput(inputId = "AppBeh.Motor.Gait", label = "Abnormal Gait", value = FALSE),
-#     textAreaInput(inputId = "AppBeh.Motor.Gait.Text", NULL, "", width = "200px", height = "35px")
-# 
-#     
-#     # text areas
-#     textAreaInput( inputId = "AppBeh.Psychomotor.Mannerism.Text", label = "Examples", value = "", height = "60px")
-#     textAreaInput( inputId = "AppBeh.Psychomotor.Stereotypy.Text", label = "Examples", value = "", height = "60px")
-#     textAreaInput(inputId = "AppBeh.Motor.Persev.Text", NULL, "", width = "200px", height = "35px")
-# }
+
+    if( is.null( current.MSE ) ) {
+      # reset / blank MSE
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Alert.Text", label = "Comments", value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Echopraxia.Text", label = NULL, value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Tremor.Text", label = NULL, value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Gait.Text", label = NULL, value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Persev.Text", label = NULL, value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Disorganisation.Text", label = "Examples", value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Mannerism.Text", label = "Examples", value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Stereotypy.Text", label = "Examples", value = "")
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Tics.Text", label = "Examples", value = "")
+      # sort out TRUE / FALSE check boxes
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Persev", label = "Perseveration",
+                          value = FALSE)
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Echopraxia", label = "Echopraxia",
+                          value = FALSE)
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Tremor", label = "Tremor", 
+                          value = FALSE)
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Gait", label = "Abnormal Gait", 
+                          value = FALSE)
+      
+    } else {
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Alert.Text", label = "Comments", value = current.MSE[["AppBeh.Psychomotor.Alert.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Echopraxia.Text", label = NULL, value = current.MSE[["AppBeh.Motor.Echopraxia.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Tremor.Text", label = NULL, value = current.MSE[["AppBeh.Motor.Tremor.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Gait.Text", label = NULL, value = current.MSE[["AppBeh.Motor.Gait.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Motor.Persev.Text", label = NULL, value = current.MSE[["AppBeh.Motor.Persev.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Disorganisation.Text", label = "Examples", value = current.MSE[["AppBeh.Psychomotor.Disorganisation.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Mannerism.Text", label = "Examples", 
+                          value = current.MSE[["AppBeh.Psychomotor.Mannerism.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Stereotypy.Text", label = "Examples", 
+                          value = current.MSE[["AppBeh.Psychomotor.Stereotypy.Text"]])
+      updateTextAreaInput(session, inputId = "AppBeh.Psychomotor.Tics.Text", label = "Examples", 
+                          value = current.MSE[["AppBeh.Psychomotor.Tics.Text"]])
+      
+      
+      # sort out TRUE / FALSE check boxes
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Persev", label = "Perseveration",
+                          value = current.MSE[["AppBeh.Motor.Persev"]])
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Echopraxia", label = "Echopraxia",
+                          value = current.MSE[["AppBeh.Motor.Echopraxia"]])
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Tremor", label = "Tremor", 
+                          value = current.MSE[["AppBeh.Motor.Tremor"]])
+      updateCheckboxInput(session, inputId = "AppBeh.Motor.Gait", label = "Abnormal Gait", 
+                          value = current.MSE[["AppBeh.Motor.Gait"]])
+      
+    }
+}
               
 
 ####################################################################
@@ -278,15 +356,15 @@ Restore_MSE.tab.AppBeh <- function(session, current.MSE){
 NarrativeAppBeh <- function( current.mse ) {
   return(
     paste(
-      NarrativeAppEyeRapport( current.mse)
+      NarrativeAppEyeRapport( current.mse),
+      NarrativePsychomotor( current.mse )
     )
   )
 }
 
 NarrativeAppEyeRapport <- function( current.mse) {
 
-  # debug only
-    current.mse <- current.scope.MSE
+  
   ####
   appear.str <- "In terms of appearance, they were "
   # completely normal Appearance ? 
@@ -399,4 +477,111 @@ NarrativeAppEyeRapport <- function( current.mse) {
 }
 
 
+# TO DO
+NarrativePsychomotor <- function( current.mse) {
+
+  # debug only  
+  current.mse <- current.scope.MSE
+  psychomotor.df <- current.mse[ , grep("AppBeh.Psycho|Motor", names(current.mse), value = TRUE) ]
+  
+  if( DataFrameRowEmpty( psychomotor.df ) == TRUE ) {
+     psychomotor.str <- "There was no evidence of psychomotor abnormalities."
+   } else {
+     psychomotor.str <- "In terms of psychomotor features: "
+   }
+  
+  psychomotor.str <- paste0( psychomotor.str, switch(psychomotor.df$AppBeh.Psychomotor.Alert,
+                                                     "sedated" = {"they appeared sedated "},
+                                                     "drowsy" = {"they appeared drowsy "},
+                                                     "lethargic" = {"they were lethargic "},
+                                                     "stuporous" = {"they were stuporous "},
+                                                      {"they were alert "}
+  )) 
+  
+  if( psychomotor.df$AppBeh.Psychomotor.Alert.Text != "" ) {
+    psychomotor.str <- paste0( psychomotor.str, "(e.g. ", psychomotor.df$AppBeh.Psychomotor.Alert.Text, ") " )  
+  }
+  
+  
+  gesture.matrix <- matrix( c( "with normal gestures", "with an absence of gestures", "with minimal gesturing", "with excessive gestures",
+                               "with normal, but slow, gestures", "with an absence of gestures", "with slow, minimal gestures", "with slow but excessive gestures",
+                               "with normal, but fast, gestures", "with an absence of gestures", "with fast, minimal gestures", "with fast and excessive gestures"),
+                                nrow = 3, ncol = 4, byrow = TRUE,
+                                dimnames = list( appbeh.psychomotor.gesture.rate, appbeh.psychomotor.gesture.form))
+  
+  psychomotor.str <- paste0( psychomotor.str, 
+                             gesture.matrix[psychomotor.df$AppBeh.Psychomotor.Gesture.Rate, psychomotor.df$AppBeh.Psychomotor.Gesture.Form],
+                             " ")
+  
+  reaction.matrix <- matrix( c( "and normal reactions", "and absent reactions", "and minimal reactions", "and excessive reactions",
+                               "and slow but otherwise normal reactions", "and absent reactions", "and slow, minimal reactions", 
+                               "and slow but excessive reactions",
+                               "and fast but otherwise normal reactions", "and absent reactions", "and fast but minimal reactions", 
+                               "and fast, excessive reactions"),
+                            nrow = 3, ncol = 4, byrow = TRUE,
+                            dimnames = list( appbeh.psychomotor.reactions.rate, appbeh.psychomotor.reactions.form))
+  
+  psychomotor.str <- paste0( psychomotor.str, 
+                             reaction.matrix[psychomotor.df$AppBeh.Psychomotor.Reactions.Rate, psychomotor.df$AppBeh.Psychomotor.Reactions.Form],
+                             ".")
+  
+  psychomotor.str <- paste0( psychomotor.str,
+                             "  Goal-directed behaviours were ",
+                             switch(psychomotor.df$AppBeh.Psychomotor.Disorganisation,
+                                    "mild" = {"mildly disorganised"},
+                                    "moderate" = {"moderately disorganised"},
+                                    "complete" = {"completely disorganised"},
+                                    {"normal"}
+                                    )
+                             )
+  if( psychomotor.df$AppBeh.Psychomotor.Disorganisation != "normal" &
+      psychomotor.df$AppBeh.Psychomotor.Disorganisation.Text != "" ) {
+    psychomotor.str <- paste0( psychomotor.str, " (e.g. ", psychomotor.df$AppBeh.Psychomotor.Disorganisation.Text, ")" )
+  } 
+  
+  psychomotor.str <- paste0(psychomotor.str, switch(psychomotor.df$AppBeh.Psychomotor.Mannerism,
+                                                    "occasional" = {", with occasional mannerisms"},
+                                                    "frequent" = {", with frequent mannerisms"},
+                                                    "regular" = {", with regular mannerisms"},
+                                                    {""}
+                                                    ))
+  
+  if( psychomotor.df$AppBeh.Psychomotor.Mannerism != "normal" &
+      psychomotor.df$AppBeh.Psychomotor.Mannerism.Text != "" ) {
+    psychomotor.str <- paste0( psychomotor.str, " (e.g. ", psychomotor.df$AppBeh.Psychomotor.Mannerism.Text, ")" )
+  }
+  
+  psychomotor.str <- paste0(psychomotor.str, switch(psychomotor.df$AppBeh.Psychomotor.Stereotypy,
+                                                    "occasional" = {" and there were occasional stereotyped movements"},
+                                                    "frequent" = {" and there were frequent stereotyped movements"},
+                                                    "regular" = {" and there were regular stereotyped movements"},
+                                                    {""}
+  ))
+  
+  if( psychomotor.df$AppBeh.Psychomotor.Stereotypy != "normal" & 
+      psychomotor.df$AppBeh.Psychomotor.Stereotypy.Text != "" ) {
+    psychomotor.str <- paste0( psychomotor.str, " (e.g. ", psychomotor.df$AppBeh.Psychomotor.Stereotypy.Text, ")." )
+  } else {
+    psychomotor.str <- paste0( psychomotor.str, "." )
+  }
+
+  psychomotor.str <- paste0(psychomotor.str, switch(psychomotor.df$AppBeh.Psychomotor.Tics,
+                                                    "occasional" = {"  They displayed occasional tics"},
+                                                    "frequent" = {"  They displayed frequent tics"},
+                                                    "regular" = {"  They displayed regular tics"},
+                                                    {""}
+  ))
+  
+  if( psychomotor.df$AppBeh.Psychomotor.Tics != "normal" &
+      psychomotor.df$AppBeh.Psychomotor.Tics.Text != "" ) {
+    psychomotor.str <- paste0( psychomotor.str, " (e.g. ", psychomotor.df$AppBeh.Psychomotor.Tics.Text, ")." )
+  } else {
+    psychomotor.str <- paste0( psychomotor.str, "." )
+  }
+
+  
+  
+  return( psychomotor.str )
+  
+}
 
