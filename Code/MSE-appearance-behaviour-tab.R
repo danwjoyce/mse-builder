@@ -585,3 +585,11 @@ NarrativePsychomotor <- function( current.mse) {
   
 }
 
+#############################################################
+# Server Code
+MSE.tab.AppBeh.Server <- function(input,output,session,fields) {
+  observeEvent(input$Gen.Narrative.AppBeh, {
+    current.scope.MSE <<- ScrapeData(input, fields)
+    output$Narrative.AppBeh <- renderText( NarrativeAppBeh( current.scope.MSE ) )
+  })
+}

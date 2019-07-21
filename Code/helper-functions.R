@@ -99,6 +99,9 @@ GenerateFilename <- function( this.mse ) {
   )
 }
 
+#########################################################
+# Helpers for manipulating form state and retrieving data
+
 ScrapeData <- function(input, fields) {
   # put variables in a data frame
   data <- data.frame(matrix(nrow=1,ncol=0))
@@ -117,4 +120,15 @@ ScrapeData <- function(input, fields) {
   
 }
 
-
+RestoreForm <- function(session, current.MSE, clear.demog = FALSE) {
+  # When an MSE is loaded, call this to set the MSE.tab up
+  # If called with current.MSE == NULL, resets the form 
+  Restore_MSE.tab.Speech(session, current.MSE )
+  Restore_MSE.tab.AppBeh(session, current.MSE )
+  Restore_MSE.tab.Psychomotor(session, current.MSE)
+  
+  if( clear.demog == TRUE ) {
+    Restore_MSE.tab.Demographics(session, current.MSE )
+  }
+  
+}

@@ -261,3 +261,13 @@ NarrativeSpeech <- function( current.mse) {
   }
   return( speech.str )
 }
+  
+####################################################################
+# Server Code 
+  MSE.tab.Speech.Server <- function(input, output, session, fields) {
+    observeEvent(input$Gen.Narrative.Speech, {
+      current.scope.MSE <<- ScrapeData(input, fields)
+      output$Narrative.Speech <- renderText( NarrativeSpeech( current.scope.MSE ) )
+    })
+  }
+  

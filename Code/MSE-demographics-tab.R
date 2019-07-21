@@ -65,11 +65,7 @@ MSE.tab.ValidateDemographics <- function(input, output) {
     output$Missing.Demog.uID <- renderText({""})
     valid.fields <- valid.fields + 1
   }
-  
-  # 
-  # textInput(inputId = "Demog.MSETime", label = "Time:", value = format( Sys.time(), "%H:%M"), 
-  #           placeholder = "Enter in 24hr format Hour:Minutes"),
-  # span(textOutput("Error.Demog.Time"), style="color:red")
+
   valid.date.time <- as.POSIXct( paste0( as.character(input$Demog.MSEDate ), " ", input$Demog.MSETime ), format = "%Y-%m-%d %H:%M" )
   if( is.na( valid.date.time ) ) {
     output$Error.Demog.Time <- renderText({"Use 24hr format HH:MM"})
@@ -102,24 +98,14 @@ Restore_MSE.tab.Demographics <- function(session, current.MSE){
   }
 }
 
-#   
-#   
-# 
-# ####################################################################
-# # Narrative building from structured data 
-#   
-# NarrativeSpeechRate <- function( speech.str ) {
-#   # rules for building the narrative description of speech process
-#   speech.str <- unlist( speech.str )
-#   
-#   # Was normal ?
-#   if( is.null( speech.str ) ) {
-#     narr.speech <- "Speech was normal in rate, rhythm and tone"
-#     return( narr.speech )
-#   } else {
-#     N <- length( speech.str )
-#     # rate abnormalities
-#     narr.speech <- paste0( paste0( speech.str[1:(N-1)], collapse = ", " ), " and ", speech.str[N] )
-#   }
-#   return( narr.speech )
-# }
+###################################################################
+# Server Code
+MSE.tab.Demographics.Server <- function( input, output, session ){
+  observeEvent(input$Demog.TodayDate, {
+    updateDateInput(session, inputId = "Demog.MSEDate", value = Sys.Date() )
+  })
+  
+  observeEvent(input$Demog.CurrentTime, {
+    updateTextInput(session, inputId = "Demog.MSETime", value = format( Sys.time(), format = "%H:%M") )
+  })
+}

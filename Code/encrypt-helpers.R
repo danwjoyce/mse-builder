@@ -1,6 +1,4 @@
-# testing sodium package as an encryption tool
 # Examples of sodium use via : https://cran.r-project.org/web/packages/sodium/vignettes/intro.html
-require(sodium)
 
 ##############################################################
 # Saving
@@ -12,7 +10,7 @@ SaveEncrypted <- function( X, file.loc, encrypt.passphrase ) {
   # -- encrypt.passphrase : character string 
   # Note each stage of the process is wrapped in silently in try() to prevent leaking data
   
-  # 1 : generate encryption key
+  # 1 : generate encryption key : note we use key stretching via hash() to increase the derived key security
   encrypt.key <- try( sodium::hash(charToRaw(encrypt.passphrase)), silent = TRUE )
     if( class( encrypt.key ) == "try-error" ) {
       # failed to generate encryption key
@@ -52,8 +50,6 @@ SaveEncrypted <- function( X, file.loc, encrypt.passphrase ) {
 
 ###############################################################
 # Loading
-
-
 LoadEncrypted <- function( file.loc, decrypt.passphrase ) {
   # 1 : load the encrypted file
   cipher <- try( readRDS( file.loc ), silent = TRUE )
@@ -83,7 +79,7 @@ LoadEncrypted <- function( file.loc, decrypt.passphrase ) {
 
 # ## test case
 # # 1 : successful save and load :
-# file.loc <- paste0(getwd(), "/testing-crypot-fun.rds")
+# file.loc <- paste0(getwd(), "/testing-crypto-fun.rds")
 # tosave <- iris
 # SaveEncrypted( tosave, file.loc, "this is a test" )
 # rm( list = c("tosave"))

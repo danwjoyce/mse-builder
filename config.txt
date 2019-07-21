@@ -1,0 +1,4 @@
+pts.path ./pts/
+index.path ./pts/index.rds
+encryption TRUE
+passphrase NULL
